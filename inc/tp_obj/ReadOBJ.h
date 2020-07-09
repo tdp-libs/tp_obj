@@ -15,7 +15,7 @@ namespace tp_obj
 {
 
 //##################################################################################################
-void readOBJFile(const std::string & filePath,
+void readOBJFile(const std::string& filePath,
                  std::string& error,
                  int triangleFan,
                  int triangleStrip,
@@ -41,6 +41,10 @@ void readOBJLoader(const objl::Loader& loader,
                    int triangles,
                    bool reverse,
                    std::vector<tp_maps::Geometry3D>& outputGeometry);
+
+//##################################################################################################
+std::string getAssociatedFilePath(const std::string& objFilePath,
+                                  const std::string& associatedFileName);
 
 }
 
