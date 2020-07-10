@@ -6,5 +6,5 @@ DEFINES += TP_OBJ_LIBRARY
 HEADERS += inc/tp_obj/Globals.h
 
 SOURCES += src/ReadOBJ.cpp
-HEADERS += inc/tp_ply/ReadOBJ.h
+HEADERS += inc/tp_obj/ReadOBJ.h
 
