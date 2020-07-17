@@ -110,6 +110,7 @@ void readOBJLoader(const objl::Loader& loader,
     outMesh.material.diffuse   = {mesh.MeshMaterial.Kd.X, mesh.MeshMaterial.Kd.Y, mesh.MeshMaterial.Kd.Z};
     outMesh.material.specular  = {mesh.MeshMaterial.Ks.X, mesh.MeshMaterial.Ks.Y, mesh.MeshMaterial.Ks.Z};
     outMesh.material.shininess = mesh.MeshMaterial.Ns;
+    outMesh.material.alpha     = mesh.MeshMaterial.d;
 
     outMesh.material.ambientTexture = mesh.MeshMaterial.map_Ka;
     outMesh.material.diffuseTexture = mesh.MeshMaterial.map_Kd;
