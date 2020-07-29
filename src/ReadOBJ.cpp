@@ -106,6 +106,7 @@ void readOBJLoader(const objl::Loader& loader,
       outIndex++;
     }
 
+    outMesh.material.name = mesh.MeshMaterial.name;
     outMesh.material.ambient   = {mesh.MeshMaterial.Ka.X, mesh.MeshMaterial.Ka.Y, mesh.MeshMaterial.Ka.Z};
     outMesh.material.diffuse   = {mesh.MeshMaterial.Kd.X, mesh.MeshMaterial.Kd.Y, mesh.MeshMaterial.Kd.Z};
     outMesh.material.specular  = {mesh.MeshMaterial.Ks.X, mesh.MeshMaterial.Ks.Y, mesh.MeshMaterial.Ks.Z};
