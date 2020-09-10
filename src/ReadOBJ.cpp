@@ -94,8 +94,6 @@ void readOBJLoader(const objl::Loader& loader,
       outVert++;
     }
 
-    // Go through every 3rd index and print the
-    //	triangle that these indices represent
     auto& indexes = outMesh.geometry.indexes.emplace_back();
     indexes.type = outMesh.geometry.triangles;
     indexes.indexes.resize(mesh.Indices.size());
@@ -105,6 +103,8 @@ void readOBJLoader(const objl::Loader& loader,
       *outIndex = int(index);
       outIndex++;
     }
+
+    tpDebug() << "Material: " << mesh.MeshMaterial.name;
 
     outMesh.material.name = mesh.MeshMaterial.name;
     outMesh.material.ambient   = {mesh.MeshMaterial.Ka.X, mesh.MeshMaterial.Ka.Y, mesh.MeshMaterial.Ka.Z};
