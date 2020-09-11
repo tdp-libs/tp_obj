@@ -104,8 +104,6 @@ void readOBJLoader(const objl::Loader& loader,
       outIndex++;
     }
 
-    tpDebug() << "Material: " << mesh.MeshMaterial.name;
-
     outMesh.material.name = mesh.MeshMaterial.name;
     outMesh.material.ambient   = {mesh.MeshMaterial.Ka.X, mesh.MeshMaterial.Ka.Y, mesh.MeshMaterial.Ka.Z};
     outMesh.material.diffuse   = {mesh.MeshMaterial.Kd.X, mesh.MeshMaterial.Kd.Y, mesh.MeshMaterial.Kd.Z};
