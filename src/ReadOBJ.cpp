@@ -9,6 +9,51 @@
 namespace tp_obj
 {
 
+namespace
+{
+
+//##################################################################################################
+struct TextureOptions
+{
+  std::string file;
+  std::vector<std::pair<std::string, std::string>> options;
+};
+
+//##################################################################################################
+TextureOptions splitTextureOptions(const std::string& in)
+{
+  TextureOptions textureOptions;
+
+  std::vector<std::string> parts;
+  tpSplit(parts, in, ' ', tp_utils::SplitBehavior::KeepEmptyParts);
+
+  for(size_t i=0; i<parts.size(); i+=2)
+  {
+    std::string key = parts.at(i);
+    if(tpStartsWith(key, "-"))
+    {
+      std::string value;
+      if(size_t ii = i+1; ii<parts.size())
+        value = parts.at(ii);
+      textureOptions.options.emplace_back(key, value);
+      tpWarning() << "Extra options: " << key << " " << value;
+    }
+    else
+    {
+      for(; i<parts.size(); i++)
+      {
+        if(!textureOptions.file.empty())
+          textureOptions.file += ' ';
+        textureOptions.file += parts.at(i);
+      }
+    }
+  }
+
+  return textureOptions;
+}
+
+}
+
 //##################################################################################################
 void readOBJFile(const std::string & filePath,
                  std::string& error,
@@ -111,11 +156,11 @@ void readOBJLoader(const objl::Loader& loader,
     outMesh.material.shininess = mesh.MeshMaterial.Ns;
     outMesh.material.alpha     = mesh.MeshMaterial.d;
 
-    outMesh.material.ambientTexture = mesh.MeshMaterial.map_Ka;
-    outMesh.material.diffuseTexture = mesh.MeshMaterial.map_Kd;
-    outMesh.material.specularTexture = mesh.MeshMaterial.map_Ks;
-    outMesh.material.alphaTexture = mesh.MeshMaterial.map_d;
-    outMesh.material.bumpTexture = mesh.MeshMaterial.map_bump;
+    outMesh.material.ambientTexture  = splitTextureOptions(mesh.MeshMaterial.map_Ka  ).file;
+    outMesh.material.diffuseTexture  = splitTextureOptions(mesh.MeshMaterial.map_Kd  ).file;
+    outMesh.material.specularTexture = splitTextureOptions(mesh.MeshMaterial.map_Ks  ).file;
+    outMesh.material.alphaTexture    = splitTextureOptions(mesh.MeshMaterial.map_d   ).file;
+    outMesh.material.bumpTexture     = splitTextureOptions(mesh.MeshMaterial.map_bump).file;
 
     std::cout << "Material: " << mesh.MeshMaterial.name << "\n";
     std::cout << "Ambient Color: " << mesh.MeshMaterial.Ka.X << ", " << mesh.MeshMaterial.Ka.Y << ", " << mesh.MeshMaterial.Ka.Z << "\n";
