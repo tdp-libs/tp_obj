@@ -162,7 +162,7 @@ void readOBJLoader(const objl::Loader& loader,
     outMesh.material.alphaTexture    = splitTextureOptions(mesh.MeshMaterial.map_d   ).file;
     outMesh.material.bumpTexture     = splitTextureOptions(mesh.MeshMaterial.map_bump).file;
 
-    std::cout << "Material: " << mesh.MeshMaterial.name << "\n";
+    std::cout << "Material: " << mesh.MeshMaterial.name << " Mesh name: " << mesh.MeshName << "\n";
     std::cout << "Ambient Color: " << mesh.MeshMaterial.Ka.X << ", " << mesh.MeshMaterial.Ka.Y << ", " << mesh.MeshMaterial.Ka.Z << "\n";
     std::cout << "Diffuse Color: " << mesh.MeshMaterial.Kd.X << ", " << mesh.MeshMaterial.Kd.Y << ", " << mesh.MeshMaterial.Kd.Z << "\n";
     std::cout << "Specular Color: " << mesh.MeshMaterial.Ks.X << ", " << mesh.MeshMaterial.Ks.Y << ", " << mesh.MeshMaterial.Ks.Z << "\n";
