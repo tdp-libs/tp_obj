@@ -150,17 +150,21 @@ void readOBJLoader(const objl::Loader& loader,
     }
 
     outMesh.material.name = mesh.MeshMaterial.name;
-    outMesh.material.ambient   = {mesh.MeshMaterial.Ka.X, mesh.MeshMaterial.Ka.Y, mesh.MeshMaterial.Ka.Z};
-    outMesh.material.diffuse   = {mesh.MeshMaterial.Kd.X, mesh.MeshMaterial.Kd.Y, mesh.MeshMaterial.Kd.Z};
+    //outMesh.material.ambient   = {mesh.MeshMaterial.Ka.X, mesh.MeshMaterial.Ka.Y, mesh.MeshMaterial.Ka.Z};
+    outMesh.material.albedo    = {mesh.MeshMaterial.Kd.X, mesh.MeshMaterial.Kd.Y, mesh.MeshMaterial.Kd.Z};
     outMesh.material.specular  = {mesh.MeshMaterial.Ks.X, mesh.MeshMaterial.Ks.Y, mesh.MeshMaterial.Ks.Z};
-    outMesh.material.shininess = mesh.MeshMaterial.Ns;
     outMesh.material.alpha     = mesh.MeshMaterial.d;
 
-    outMesh.material.ambientTexture  = splitTextureOptions(mesh.MeshMaterial.map_Ka  ).file;
-    outMesh.material.diffuseTexture  = splitTextureOptions(mesh.MeshMaterial.map_Kd  ).file;
+    outMesh.material.roughness = std::sqrt(2.0f/(2.0f+float(mesh.MeshMaterial.Ns)));
+
+    if(!mesh.MeshMaterial.map_Kd.empty())
+      outMesh.material.albedoTexture = mesh.MeshMaterial.map_Kd;
+    else
+      outMesh.material.albedoTexture = mesh.MeshMaterial.map_Ka;
+
     outMesh.material.specularTexture = splitTextureOptions(mesh.MeshMaterial.map_Ks  ).file;
     outMesh.material.alphaTexture    = splitTextureOptions(mesh.MeshMaterial.map_d   ).file;
-    outMesh.material.bumpTexture     = splitTextureOptions(mesh.MeshMaterial.map_bump).file;
+    outMesh.material.normalsTexture  = splitTextureOptions(mesh.MeshMaterial.map_bump).file;
 
     std::cout << "Material: " << mesh.MeshMaterial.name << " Mesh name: " << mesh.MeshName << "\n";
     std::cout << "Ambient Color: " << mesh.MeshMaterial.Ka.X << ", " << mesh.MeshMaterial.Ka.Y << ", " << mesh.MeshMaterial.Ka.Z << "\n";
@@ -174,7 +178,7 @@ void readOBJLoader(const objl::Loader& loader,
     std::cout << "Diffuse Texture Map: " << mesh.MeshMaterial.map_Kd << "\n";
     std::cout << "Specular Texture Map: " << mesh.MeshMaterial.map_Ks << "\n";
     std::cout << "Alpha Texture Map: " << mesh.MeshMaterial.map_d << "\n";
-    std::cout << "Bump Map: " << mesh.MeshMaterial.map_bump << "\n";
+    std::cout << "Normals Map: " << mesh.MeshMaterial.map_bump << "\n";
   }
 }
 
