@@ -117,7 +117,7 @@ void readOBJLoader(const objl::Loader& loader,
                    bool reverse,
                    std::vector<tp_maps::Geometry3D>& outputGeometry)
 {
-  TP_UNUSED(error);
+  error += loader.errors;
 
   outputGeometry.reserve(loader.LoadedMeshes.size());
   for(const auto& mesh : loader.LoadedMeshes)
