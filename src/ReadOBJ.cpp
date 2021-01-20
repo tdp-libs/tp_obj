@@ -61,7 +61,7 @@ void readOBJFile(const std::string & filePath,
                  int triangleStrip,
                  int triangles,
                  bool reverse,
-                 std::vector<tp_maps::Geometry3D>& outputGeometry)
+                 std::vector<tp_math_utils::Geometry3D>& outputGeometry)
 {
   objl::Loader loader;
 
@@ -89,7 +89,7 @@ void readOBJStream(std::istream& inputStream,
                    int triangleStrip,
                    int triangles,
                    bool reverse,
-                   std::vector<tp_maps::Geometry3D>& outputGeometry)
+                   std::vector<tp_math_utils::Geometry3D>& outputGeometry)
 {
   objl::Loader loader;
 
@@ -115,7 +115,7 @@ void readOBJLoader(const objl::Loader& loader,
                    int triangleStrip,
                    int triangles,
                    bool reverse,
-                   std::vector<tp_maps::Geometry3D>& outputGeometry)
+                   std::vector<tp_math_utils::Geometry3D>& outputGeometry)
 {
   error += loader.errors;
 
@@ -123,13 +123,13 @@ void readOBJLoader(const objl::Loader& loader,
   for(const auto& mesh : loader.LoadedMeshes)
   {
     auto& outMesh = outputGeometry.emplace_back();
-    outMesh.geometry.triangleFan   = triangleFan;
-    outMesh.geometry.triangleStrip = triangleStrip;
-    outMesh.geometry.triangles     = triangles;
+    outMesh.triangleFan   = triangleFan;
+    outMesh.triangleStrip = triangleStrip;
+    outMesh.triangles     = triangles;
 
-    outMesh.geometry.comments.push_back(mesh.MeshName);
-    outMesh.geometry.verts.resize(mesh.Vertices.size());
-    auto outVert = outMesh.geometry.verts.data();
+    outMesh.comments.push_back(mesh.MeshName);
+    outMesh.verts.resize(mesh.Vertices.size());
+    auto outVert = outMesh.verts.data();
     for(const auto& v : mesh.Vertices)
     {
       outVert->vert    = {v.Position.X, v.Position.Y, v.Position.Z};
@@ -139,8 +139,8 @@ void readOBJLoader(const objl::Loader& loader,
       outVert++;
     }
 
-    auto& indexes = outMesh.geometry.indexes.emplace_back();
-    indexes.type = outMesh.geometry.triangles;
+    auto& indexes = outMesh.indexes.emplace_back();
+    indexes.type = outMesh.triangles;
     indexes.indexes.resize(mesh.Indices.size());
     auto outIndex = indexes.indexes.data();
     for (const auto& index : mesh.Indices)
