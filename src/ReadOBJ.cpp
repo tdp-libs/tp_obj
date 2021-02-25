@@ -150,9 +150,7 @@ void readOBJLoader(const objl::Loader& loader,
     }
 
     outMesh.material.name = mesh.MeshMaterial.name;
-    //outMesh.material.ambient   = {mesh.MeshMaterial.Ka.X, mesh.MeshMaterial.Ka.Y, mesh.MeshMaterial.Ka.Z};
     outMesh.material.albedo    = {mesh.MeshMaterial.Kd.X, mesh.MeshMaterial.Kd.Y, mesh.MeshMaterial.Kd.Z};
-    outMesh.material.specular  = {mesh.MeshMaterial.Ks.X, mesh.MeshMaterial.Ks.Y, mesh.MeshMaterial.Ks.Z};
     outMesh.material.alpha     = mesh.MeshMaterial.d;
 
     outMesh.material.roughness = std::sqrt(2.0f/(2.0f+float(mesh.MeshMaterial.Ns)));
@@ -162,7 +160,6 @@ void readOBJLoader(const objl::Loader& loader,
     else
       outMesh.material.albedoTexture = mesh.MeshMaterial.map_Ka;
 
-    outMesh.material.specularTexture = splitTextureOptions(mesh.MeshMaterial.map_Ks  ).file;
     outMesh.material.alphaTexture    = splitTextureOptions(mesh.MeshMaterial.map_d   ).file;
     outMesh.material.normalsTexture  = splitTextureOptions(mesh.MeshMaterial.map_bump).file;
 
