@@ -38,15 +38,21 @@ std::vector<std::vector<std::string>> parseLines(const std::string& filePath)
 {
   std::vector<std::vector<std::string>> lines;
 
-  auto splitLine = [](const std::string& line)
+  auto splitLine = [](std::string line)
   {
     std::vector<std::string> parts;
-    tpSplit(parts, line.substr(0, line.find_first_of('#')), ' ', tp_utils::SplitBehavior::SkipEmptyParts);
+    if(auto i=line.find_first_of('#'); i!=std::string::npos)
+      line.erase(i);
+    line.erase(0, line.find_first_not_of(" \t\n\r\f\v"));
+
+    tpSplit(parts, line, ' ', tp_utils::SplitBehavior::SkipEmptyParts);
     return parts;
   };
 
   std::vector<std::string> rawLines;
-  tpSplit(rawLines, tp_utils::readTextFile(filePath), '\n', tp_utils::SplitBehavior::SkipEmptyParts);
+  std::string text = tp_utils::readTextFile(filePath);
+  tpRemoveChar(text, '\r');
+  tpSplit(rawLines, text, '\n', tp_utils::SplitBehavior::SkipEmptyParts);
 
   lines.reserve(rawLines.size());
   for(const auto& line : rawLines)
@@ -317,7 +323,6 @@ bool parseOBJ(const std::string& filePath,
           return index;
         };
 
-
         int a = parseAddVert(parts.at(1));
         int b = parseAddVert(parts.at(2));
         int c = parseAddVert(parts.at(3));
@@ -328,6 +333,19 @@ bool parseOBJ(const std::string& filePath,
         f.indexes.push_back(a);
         f.indexes.push_back(b);
         f.indexes.push_back(c);
+
+        // If its a quad we need to add an extra polygon. It looks like faces can contain an
+        // arbitrary number of points but im not sure what the rule is for triangulating them.
+        if(parts.size()>4)
+        {
+          int d = parseAddVert(parts.at(4));
+          if(d<0)
+            continue;
+
+          f.indexes.push_back(c);
+          f.indexes.push_back(d);
+          f.indexes.push_back(a);
+        }
       }
     }
   }
