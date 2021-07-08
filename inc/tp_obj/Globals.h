@@ -14,6 +14,16 @@
 namespace tp_obj
 {
 
+//##################################################################################################
+struct TextureOptions
+{
+  std::string file;
+  std::vector<std::pair<std::string, std::string>> options;
+};
+
+//##################################################################################################
+TextureOptions splitTextureOptions(const std::string& in);
+
 }
 
 #endif

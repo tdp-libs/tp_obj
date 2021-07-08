@@ -1,4 +1,5 @@
 #include "tp_obj/ReadOBJ.h"
+#include "tp_obj/OBJParser.h"
 
 #include "tp_math_utils/Geometry3D.h"
 
@@ -9,51 +10,6 @@
 namespace tp_obj
 {
 
-namespace
-{
-
-//##################################################################################################
-struct TextureOptions
-{
-  std::string file;
-  std::vector<std::pair<std::string, std::string>> options;
-};
-
-//##################################################################################################
-TextureOptions splitTextureOptions(const std::string& in)
-{
-  TextureOptions textureOptions;
-
-  std::vector<std::string> parts;
-  tpSplit(parts, in, ' ', tp_utils::SplitBehavior::KeepEmptyParts);
-
-  for(size_t i=0; i<parts.size(); i+=2)
-  {
-    std::string key = parts.at(i);
-    if(tpStartsWith(key, "-"))
-    {
-      std::string value;
-      if(size_t ii = i+1; ii<parts.size())
-        value = parts.at(ii);
-      textureOptions.options.emplace_back(key, value);
-      tpWarning() << "Extra options: " << key << " " << value;
-    }
-    else
-    {
-      for(; i<parts.size(); i++)
-      {
-        if(!textureOptions.file.empty())
-          textureOptions.file += ' ';
-        textureOptions.file += parts.at(i);
-      }
-    }
-  }
-
-  return textureOptions;
-}
-
-}
-
 //##################################################################################################
 void readOBJFile(const std::string & filePath,
                  std::string& error,
@@ -63,6 +19,9 @@ void readOBJFile(const std::string & filePath,
                  bool reverse,
                  std::vector<tp_math_utils::Geometry3D>& outputGeometry)
 {
+#if 1
+  parseOBJ(filePath, error, triangleFan, triangleStrip, triangles, reverse, outputGeometry);
+#else
   objl::Loader loader;
 
   if(!loader.LoadFile(filePath))
@@ -78,6 +37,7 @@ void readOBJFile(const std::string & filePath,
                 triangles,
                 reverse,
                 outputGeometry);
+#endif
 }
 
 
