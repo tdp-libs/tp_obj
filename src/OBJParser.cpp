@@ -420,7 +420,7 @@ bool parseMTL(const std::string& filePath,
       if(parts.size() != 2)
         continue;
 
-      m.specular = readFloat(parts[1]);
+      //m.specular = readFloat(parts[1]);
       m.roughness = std::sqrt(2.0f/(2.0f+float(m.specular)));
     }
 
@@ -470,7 +470,7 @@ bool parseMTL(const std::string& filePath,
     // Specular Hightlight Map
     else if(c == "map_Ns")
     {
-      m.specularTexture = joinName(parts);
+      // m.specularTexture = joinName(parts);
     }
 
     // Alpha Texture Map
