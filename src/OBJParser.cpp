@@ -207,11 +207,14 @@ bool parseOBJ(const std::string& filePath,
         newObject = true;
         newMesh = true;
       }
-
-      else if(c == "g" || c == "s")
+      else if(c == "g")
       {
         groupName=joinName(parts);
         newMesh = true;
+      }
+      else if(c == "s")
+      {
+        groupName=joinName(parts);
       }
 
       else if(c == "f")
