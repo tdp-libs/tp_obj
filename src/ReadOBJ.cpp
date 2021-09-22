@@ -123,19 +123,19 @@ void readOBJLoader(const objl::Loader& loader,
     outMesh.material.alphaTexture    = splitTextureOptions(mesh.MeshMaterial.map_d   ).file;
     outMesh.material.normalsTexture  = splitTextureOptions(mesh.MeshMaterial.map_bump).file;
 
-    std::cout << "Material: " << mesh.MeshMaterial.name << " Mesh name: " << mesh.MeshName << "\n";
-    std::cout << "Ambient Color: " << mesh.MeshMaterial.Ka.X << ", " << mesh.MeshMaterial.Ka.Y << ", " << mesh.MeshMaterial.Ka.Z << "\n";
-    std::cout << "Diffuse Color: " << mesh.MeshMaterial.Kd.X << ", " << mesh.MeshMaterial.Kd.Y << ", " << mesh.MeshMaterial.Kd.Z << "\n";
-    std::cout << "Specular Color: " << mesh.MeshMaterial.Ks.X << ", " << mesh.MeshMaterial.Ks.Y << ", " << mesh.MeshMaterial.Ks.Z << "\n";
-    std::cout << "Specular Exponent: " << mesh.MeshMaterial.Ns << "\n";
-    std::cout << "Optical Density: " << mesh.MeshMaterial.Ni << "\n";
-    std::cout << "Dissolve: " << mesh.MeshMaterial.d << "\n";
-    std::cout << "Illumination: " << mesh.MeshMaterial.illum << "\n";
-    std::cout << "Ambient Texture Map: " << mesh.MeshMaterial.map_Ka << "\n";
-    std::cout << "Diffuse Texture Map: " << mesh.MeshMaterial.map_Kd << "\n";
-    std::cout << "Specular Texture Map: " << mesh.MeshMaterial.map_Ks << "\n";
-    std::cout << "Alpha Texture Map: " << mesh.MeshMaterial.map_d << "\n";
-    std::cout << "Normals Map: " << mesh.MeshMaterial.map_bump << "\n";
+    tpWarning() << "Material: " << mesh.MeshMaterial.name << " Mesh name: " << mesh.MeshName;
+    tpWarning() << "Ambient Color: " << mesh.MeshMaterial.Ka.X << ", " << mesh.MeshMaterial.Ka.Y << ", " << mesh.MeshMaterial.Ka.Z;
+    tpWarning() << "Diffuse Color: " << mesh.MeshMaterial.Kd.X << ", " << mesh.MeshMaterial.Kd.Y << ", " << mesh.MeshMaterial.Kd.Z;
+    tpWarning() << "Specular Color: " << mesh.MeshMaterial.Ks.X << ", " << mesh.MeshMaterial.Ks.Y << ", " << mesh.MeshMaterial.Ks.Z;
+    tpWarning() << "Specular Exponent: " << mesh.MeshMaterial.Ns;
+    tpWarning() << "Optical Density: " << mesh.MeshMaterial.Ni;
+    tpWarning() << "Dissolve: " << mesh.MeshMaterial.d;
+    tpWarning() << "Illumination: " << mesh.MeshMaterial.illum;
+    tpWarning() << "Ambient Texture Map: " << mesh.MeshMaterial.map_Ka;
+    tpWarning() << "Diffuse Texture Map: " << mesh.MeshMaterial.map_Kd;
+    tpWarning() << "Specular Texture Map: " << mesh.MeshMaterial.map_Ks;
+    tpWarning() << "Alpha Texture Map: " << mesh.MeshMaterial.map_d;
+    tpWarning() << "Normals Map: " << mesh.MeshMaterial.map_bump;
   }
 }
 
