@@ -439,6 +439,9 @@ bool parseMTL(const std::string& filePath,
     // Dissolve
     else if(c == "d")
     {
+      if(parts.size() != 2)
+        continue;
+
       m.alpha = readFloat(parts[1]);
     }
 
@@ -492,6 +495,145 @@ bool parseMTL(const std::string& filePath,
     else if(c == "map_ao")
     {
       //map_ao = splitTextureOptions(joinName(parts)).file;
+    }
+
+    //-- Extended material properties --------------------------------------------------------------
+
+    else if(c == "Roughness")
+    {
+      if(parts.size() != 2)
+        continue;
+
+      m.roughness = readFloat(parts[1]);
+    }
+    else if(c == "Metalness")
+    {
+      if(parts.size() != 2)
+        continue;
+
+      m.metalness = readFloat(parts[1]);
+    }
+    else if(c == "Specular")
+    {
+      if(parts.size() != 2)
+        continue;
+
+      m.specular = readFloat(parts[1]);
+    }
+    else if( c == "Emission")
+    {
+      if(parts.size() != 4)
+        continue;
+
+      m.emission.x = readFloat(parts[1]);
+      m.emission.y = readFloat(parts[2]);
+      m.emission.z = readFloat(parts[3]);
+    }
+    else if( c == "Subsurface")
+    {
+      if(parts.size() != 4)
+        continue;
+
+      m.sss.x = readFloat(parts[1]);
+      m.sss.y = readFloat(parts[2]);
+      m.sss.z = readFloat(parts[3]);
+    }
+    else if(c == "SubsurfaceScale")
+    {
+      if(parts.size() != 2)
+        continue;
+
+      m.sssScale = readFloat(parts[1]);
+    }
+    else if(c == "Transmission")
+    {
+      if(parts.size() != 2)
+        continue;
+
+      m.transmission = readFloat(parts[1]);
+    }
+    else if(c == "TransmissionRoughness")
+    {
+      if(parts.size() != 2)
+        continue;
+
+      m.transmissionRoughness = readFloat(parts[1]);
+    }
+    else if(c == "Sheen")
+    {
+      if(parts.size() != 2)
+        continue;
+
+      m.sheen = readFloat(parts[1]);
+    }
+    else if(c == "SheenTint")
+    {
+      if(parts.size() != 2)
+        continue;
+
+      m.sheenTint = readFloat(parts[1]);
+    }
+    else if(c == "ClearCoat")
+    {
+      if(parts.size() != 2)
+        continue;
+
+      m.clearCoat = readFloat(parts[1]);
+    }
+    else if(c == "ClearCoatRoughness")
+    {
+      if(parts.size() != 2)
+        continue;
+
+      m.clearCoatRoughness = readFloat(parts[1]);
+    }
+    else if(c == "map_ClearCoat")
+    {
+      m.clearCoatTexture = joinName(parts);
+    }
+    else if(c == "map_ClearCoatRoughness")
+    {
+      m.clearCoatRoughnessTexture = joinName(parts);
+    }
+    else if(c == "map_Emission")
+    {
+      m.emissionTexture = joinName(parts);
+    }
+    else if(c == "map_Metalness")
+    {
+      m.metalnessTexture = joinName(parts);
+    }
+    else if(c == "map_Roughness")
+    {
+      m.roughnessTexture = joinName(parts);
+    }
+    else if(c == "map_Sheen")
+    {
+      m.sheenTexture = joinName(parts);
+    }
+    else if(c == "map_SheenTint")
+    {
+      m.sheenTintTexture = joinName(parts);
+    }
+    else if(c == "map_Specular")
+    {
+      m.specularTexture = joinName(parts);
+    }
+    else if(c == "map_Subsurface")
+    {
+      m.sssTexture = joinName(parts);
+    }
+    else if(c == "map_SubsurfaceScale")
+    {
+      m.sssScaleTexture = joinName(parts);
+    }
+    else if(c == "map_Transmission")
+    {
+      m.transmissionTexture = joinName(parts);
+    }
+    else if(c == "map_TransmissionRoughness")
+    {
+      m.transmissionRoughnessTexture = joinName(parts);
     }
   }
 
