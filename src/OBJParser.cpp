@@ -587,6 +587,13 @@ bool parseMTL(const std::string& filePath,
 
       m.clearCoatRoughness = readFloat(parts[1]);
     }
+    else if(c == "IOR")
+    {
+      if(parts.size() != 2)
+        continue;
+
+      m.ior = readFloat(parts[1]);
+    }
     else if(c == "map_ClearCoat")
     {
       m.clearCoatTexture = joinName(parts);
