@@ -384,37 +384,76 @@ bool parseMTL(const std::string& filePath,
 
     auto& m = outputMaterials.back();
 
-    // Ambient Color
-    if(c == "Ka")
+    auto floatProperty = [&](auto key, float& value)
     {
-      if(parts.size() != 4)
-        continue;
+      if(c != key)
+        return false;
 
-      // Ka.x = readFloat(parts[1]);
-      // Ka.y = readFloat(parts[2]);
-      // Ka.z = readFloat(parts[3]);
-    }
+      if(parts.size() == 2)
+        value = readFloat(parts[1]);
 
-    // Diffuse Color
-    else if( c == "Kd")
+      return true;
+    };
+
+    auto ignoreFloatProperty = [&](auto key)
     {
-      if(parts.size() != 4)
-        continue;
+      return (c == key);
+    };
 
-      m.albedo.x = readFloat(parts[1]);
-      m.albedo.y = readFloat(parts[2]);
-      m.albedo.z = readFloat(parts[3]);
-    }
-
-    // Specular Color
-    else if(c == "Ks")
+    auto vec3Property = [&](auto key, glm::vec3& value)
     {
-      if(parts.size() != 4)
-        continue;
+      if(c != key)
+        return false;
 
-      // Ks.x = readFloat(parts[1]);
-      // Ks.y = readFloat(parts[2]);
-      // Ks.z = readFloat(parts[3]);
+      if(parts.size() == 2)
+      {
+        value.x = readFloat(parts[1]);
+        value.y = readFloat(parts[2]);
+        value.z = readFloat(parts[3]);
+      }
+
+      return true;
+    };
+
+    auto ignoreVec3Property = [&](auto key)
+    {
+      return (c == key);
+    };
+
+    auto mapProperty = [&](auto key, tp_utils::StringID& value)
+    {
+      if(c != key)
+        return false;
+
+      value = splitTextureOptions(joinName(parts)).file;
+      return true;
+    };
+
+    auto ignoreMapProperty = [&](auto key)
+    {
+      return (c == key);
+    };
+
+    if     ( ignoreVec3Property("Ka"                        )){} // Ambient Color
+    else if(       vec3Property("Kd"      , m.albedo        )){} // Diffuse Color
+    else if( ignoreVec3Property("Ks"                        )){} // Specular Color
+    else if(ignoreFloatProperty("Ni"                        )){} // Optical Density
+    else if(      floatProperty("d"       , m.alpha         )){} // Dissolve
+    else if(        mapProperty("map_Kd"  , m.albedoTexture )){} // Diffuse Texture Map
+    else if(  ignoreMapProperty("map_Ks"                    )){} // Specular Texture Map
+    else if(  ignoreMapProperty("map_Ns"                    )){} // Specular Hightlight Map
+    else if(        mapProperty("map_d"   , m.alphaTexture  )){} // Alpha Texture Map
+    else if(        mapProperty("map_Bump", m.normalsTexture)){} // Bump Map
+    else if(        mapProperty("map_bump", m.normalsTexture)){} // Bump Map
+    else if(        mapProperty("bump"    , m.normalsTexture)){} // Bump Map
+    else if(        mapProperty("norm"    , m.normalsTexture)){} // Bump Map
+    else if(  ignoreMapProperty("map_ao"                    )){} // Alpha Texture Map
+
+    // Ambient Texture Map
+    else if(c == "map_Ka")
+    {
+      if(!m.albedoTexture.isValid())
+        m.albedoTexture = joinName(parts);
     }
 
     // Specular Exponent
@@ -424,25 +463,7 @@ bool parseMTL(const std::string& filePath,
         continue;
 
       //m.specular = readFloat(parts[1]);
-      m.roughness = std::sqrt(2.0f/(2.0f+float(m.specular)));
-    }
-
-    // Optical Density
-    else if(c == "Ni")
-    {
-      if(parts.size() != 2)
-        continue;
-
-      //Ni = readFloat(parts[1]);
-    }
-
-    // Dissolve
-    else if(c == "d")
-    {
-      if(parts.size() != 2)
-        continue;
-
-      m.alpha = readFloat(parts[1]);
+      //m.roughness = std::sqrt(2.0f/(2.0f+float(m.specular)));
     }
 
     // Illumination
@@ -454,194 +475,39 @@ bool parseMTL(const std::string& filePath,
       //illum = std::stoi(parts[1]);
     }
 
-    // Ambient Texture Map
-    else if(c == "map_Ka")
-    {
-      if(!m.albedoTexture.isValid())
-        m.albedoTexture = joinName(parts);
-    }
-
-    // Diffuse Texture Map
-    else if(c == "map_Kd")
-    {
-      m.albedoTexture = joinName(parts);
-    }
-
-    // Specular Texture Map
-    else if(c == "map_Ks")
-    {
-      // map_Ks = joinName(parts);
-    }
-
-    // Specular Hightlight Map
-    else if(c == "map_Ns")
-    {
-      // m.specularTexture = joinName(parts);
-    }
-
-    // Alpha Texture Map
-    else if(c == "map_d")
-    {
-      m.alphaTexture = splitTextureOptions(joinName(parts)).file;
-    }
-
-    // Bump Map
-    else if(c == "map_Bump" || c == "map_bump" || c == "bump" || c == "norm")
-    {
-      m.normalsTexture = splitTextureOptions(joinName(parts)).file;
-    }
-
-    // Alpha Texture Map
-    else if(c == "map_ao")
-    {
-      //map_ao = splitTextureOptions(joinName(parts)).file;
-    }
-
     //-- Extended material properties --------------------------------------------------------------
-
-    else if(c == "Roughness")
-    {
-      if(parts.size() != 2)
-        continue;
-
-      m.roughness = readFloat(parts[1]);
-    }
-    else if(c == "Metalness")
-    {
-      if(parts.size() != 2)
-        continue;
-
-      m.metalness = readFloat(parts[1]);
-    }
-    else if(c == "Specular")
-    {
-      if(parts.size() != 2)
-        continue;
-
-      m.specular = readFloat(parts[1]);
-    }
-    else if( c == "Emission")
-    {
-      if(parts.size() != 4)
-        continue;
-
-      m.emission.x = readFloat(parts[1]);
-      m.emission.y = readFloat(parts[2]);
-      m.emission.z = readFloat(parts[3]);
-    }
-    else if( c == "Subsurface")
-    {
-      if(parts.size() != 4)
-        continue;
-
-      m.sss.x = readFloat(parts[1]);
-      m.sss.y = readFloat(parts[2]);
-      m.sss.z = readFloat(parts[3]);
-    }
-    else if(c == "SubsurfaceScale")
-    {
-      if(parts.size() != 2)
-        continue;
-
-      m.sssScale = readFloat(parts[1]);
-    }
-    else if(c == "Transmission")
-    {
-      if(parts.size() != 2)
-        continue;
-
-      m.transmission = readFloat(parts[1]);
-    }
-    else if(c == "TransmissionRoughness")
-    {
-      if(parts.size() != 2)
-        continue;
-
-      m.transmissionRoughness = readFloat(parts[1]);
-    }
-    else if(c == "Sheen")
-    {
-      if(parts.size() != 2)
-        continue;
-
-      m.sheen = readFloat(parts[1]);
-    }
-    else if(c == "SheenTint")
-    {
-      if(parts.size() != 2)
-        continue;
-
-      m.sheenTint = readFloat(parts[1]);
-    }
-    else if(c == "ClearCoat")
-    {
-      if(parts.size() != 2)
-        continue;
-
-      m.clearCoat = readFloat(parts[1]);
-    }
-    else if(c == "ClearCoatRoughness")
-    {
-      if(parts.size() != 2)
-        continue;
-
-      m.clearCoatRoughness = readFloat(parts[1]);
-    }
-    else if(c == "IOR")
-    {
-      if(parts.size() != 2)
-        continue;
-
-      m.ior = readFloat(parts[1]);
-    }
-    else if(c == "map_ClearCoat")
-    {
-      m.clearCoatTexture = joinName(parts);
-    }
-    else if(c == "map_ClearCoatRoughness")
-    {
-      m.clearCoatRoughnessTexture = joinName(parts);
-    }
-    else if(c == "map_Emission")
-    {
-      m.emissionTexture = joinName(parts);
-    }
-    else if(c == "map_Metalness")
-    {
-      m.metalnessTexture = joinName(parts);
-    }
-    else if(c == "map_Roughness")
-    {
-      m.roughnessTexture = joinName(parts);
-    }
-    else if(c == "map_Sheen")
-    {
-      m.sheenTexture = joinName(parts);
-    }
-    else if(c == "map_SheenTint")
-    {
-      m.sheenTintTexture = joinName(parts);
-    }
-    else if(c == "map_Specular")
-    {
-      m.specularTexture = joinName(parts);
-    }
-    else if(c == "map_Subsurface")
-    {
-      m.sssTexture = joinName(parts);
-    }
-    else if(c == "map_SubsurfaceScale")
-    {
-      m.sssScaleTexture = joinName(parts);
-    }
-    else if(c == "map_Transmission")
-    {
-      m.transmissionTexture = joinName(parts);
-    }
-    else if(c == "map_TransmissionRoughness")
-    {
-      m.transmissionRoughnessTexture = joinName(parts);
-    }
+    else if(floatProperty("Roughness"                , m.roughness                   )){}
+    else if(floatProperty("Metalness"                , m.metalness                   )){}
+    else if(floatProperty("Specular"                 , m.specular                    )){}
+    else if( vec3Property("Emission"                 , m.emission                    )){}
+    else if( vec3Property("Subsurface"               , m.sss                         )){}
+    else if(floatProperty("SubsurfaceScale"          , m.sssScale                    )){}
+    else if(floatProperty("Transmission"             , m.transmission                )){}
+    else if(floatProperty("TransmissionRoughness"    , m.transmissionRoughness       )){}
+    else if(floatProperty("Sheen"                    , m.sheen                       )){}
+    else if(floatProperty("SheenTint"                , m.sheenTint                   )){}
+    else if(floatProperty("ClearCoat"                , m.clearCoat                   )){}
+    else if(floatProperty("ClearCoatRoughness"       , m.clearCoatRoughness          )){}
+    else if(floatProperty("IOR"                      , m.ior                         )){}
+    else if(floatProperty("albedoBrightness"         , m.albedoBrightness            )){}
+    else if(floatProperty("albedoContrast"           , m.albedoContrast              )){}
+    else if(floatProperty("albedoGamma"              , m.albedoGamma                 )){}
+    else if(floatProperty("albedoHue"                , m.albedoHue                   )){}
+    else if(floatProperty("albedoSaturation"         , m.albedoSaturation            )){}
+    else if(floatProperty("albedoValue"              , m.albedoValue                 )){}
+    else if(floatProperty("albedoFactor"             , m.albedoFactor                )){}
+    else if(  mapProperty("map_ClearCoat"            , m.clearCoatTexture            )){}
+    else if(  mapProperty("map_ClearCoatRoughness"   , m.clearCoatRoughnessTexture   )){}
+    else if(  mapProperty("map_Emission"             , m.emissionTexture             )){}
+    else if(  mapProperty("map_Metalness"            , m.metalnessTexture            )){}
+    else if(  mapProperty("map_Roughness"            , m.roughnessTexture            )){}
+    else if(  mapProperty("map_Sheen"                , m.sheenTexture                )){}
+    else if(  mapProperty("map_SheenTint"            , m.sheenTintTexture            )){}
+    else if(  mapProperty("map_Specular"             , m.specularTexture             )){}
+    else if(  mapProperty("map_Subsurface"           , m.sssTexture                  )){}
+    else if(  mapProperty("map_SubsurfaceScale"      , m.sssScaleTexture             )){}
+    else if(  mapProperty("map_Transmission"         , m.transmissionTexture         )){}
+    else if(  mapProperty("map_TransmissionRoughness", m.transmissionRoughnessTexture)){}
   }
 
   return true;
