@@ -405,7 +405,7 @@ bool parseMTL(const std::string& filePath,
       if(c != key)
         return false;
 
-      if(parts.size() == 2)
+      if(parts.size() == 4)
       {
         value.x = readFloat(parts[1]);
         value.y = readFloat(parts[2]);
@@ -482,6 +482,7 @@ bool parseMTL(const std::string& filePath,
     else if( vec3Property("Emission"                 , m.emission                    )){}
     else if( vec3Property("Subsurface"               , m.sss                         )){}
     else if(floatProperty("SubsurfaceScale"          , m.sssScale                    )){}
+    else if( vec3Property("SubsurfaceRadius"         , m.sssRadius                   )){}
     else if(floatProperty("Transmission"             , m.transmission                )){}
     else if(floatProperty("TransmissionRoughness"    , m.transmissionRoughness       )){}
     else if(floatProperty("Sheen"                    , m.sheen                       )){}
