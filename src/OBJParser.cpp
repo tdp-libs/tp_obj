@@ -494,45 +494,46 @@ bool parseMTL(const std::string& filePath,
     }
 
     //-- Extended material properties --------------------------------------------------------------
-    else if(floatProperty("Roughness"                  , m.roughness                   )){}
-    else if(floatProperty("Metalness"                  , m.metalness                   )){}
-    else if(floatProperty("Specular"                   , m.specular                    )){}
-    else if( vec3Property("Emission"                   , m.emission                    )){}
-    else if( vec3Property("Subsurface"                 , m.sss                         )){}
-    else if(floatProperty("SubsurfaceScale"            , m.sssScale                    )){}
-    else if( vec3Property("SubsurfaceRadius"           , m.sssRadius                   )){}
-    else if(floatProperty("Transmission"               , m.transmission                )){}
-    else if(floatProperty("TransmissionRoughness"      , m.transmissionRoughness       )){}
-    else if(floatProperty("Sheen"                      , m.sheen                       )){}
-    else if(floatProperty("SheenTint"                  , m.sheenTint                   )){}
-    else if(floatProperty("ClearCoat"                  , m.clearCoat                   )){}
-    else if(floatProperty("ClearCoatRoughness"         , m.clearCoatRoughness          )){}
-    else if(floatProperty("IOR"                        , m.ior                         )){}
-    else if(floatProperty("albedoBrightness"           , m.albedoBrightness            )){}
-    else if(floatProperty("albedoContrast"             , m.albedoContrast              )){}
-    else if(floatProperty("albedoGamma"                , m.albedoGamma                 )){}
-    else if(floatProperty("albedoHue"                  , m.albedoHue                   )){}
-    else if(floatProperty("albedoSaturation"           , m.albedoSaturation            )){}
-    else if(floatProperty("albedoValue"                , m.albedoValue                 )){}
-    else if(floatProperty("albedoFactor"               , m.albedoFactor                )){}
-    else if( boolProperty("rayVisibilitityCamera"      , m.rayVisibilitityCamera       )){}
-    else if( boolProperty("rayVisibilitityDiffuse"     , m.rayVisibilitityDiffuse      )){}
-    else if( boolProperty("rayVisibilitityGlossy"      , m.rayVisibilitityGlossy       )){}
-    else if( boolProperty("rayVisibilitityTransmission", m.rayVisibilitityTransmission )){}
-    else if( boolProperty("rayVisibilitityScatter"     , m.rayVisibilitityScatter      )){}
-    else if( boolProperty("rayVisibilitityShadow"      , m.rayVisibilitityShadow       )){}
-    else if(  mapProperty("map_ClearCoat"              , m.clearCoatTexture            )){}
-    else if(  mapProperty("map_ClearCoatRoughness"     , m.clearCoatRoughnessTexture   )){}
-    else if(  mapProperty("map_Emission"               , m.emissionTexture             )){}
-    else if(  mapProperty("map_Metalness"              , m.metalnessTexture            )){}
-    else if(  mapProperty("map_Roughness"              , m.roughnessTexture            )){}
-    else if(  mapProperty("map_Sheen"                  , m.sheenTexture                )){}
-    else if(  mapProperty("map_SheenTint"              , m.sheenTintTexture            )){}
-    else if(  mapProperty("map_Specular"               , m.specularTexture             )){}
-    else if(  mapProperty("map_Subsurface"             , m.sssTexture                  )){}
-    else if(  mapProperty("map_SubsurfaceScale"        , m.sssScaleTexture             )){}
-    else if(  mapProperty("map_Transmission"           , m.transmissionTexture         )){}
-    else if(  mapProperty("map_TransmissionRoughness"  , m.transmissionRoughnessTexture)){}
+    else if(floatProperty("Roughness"                   , m.roughness                   )){}
+    else if(floatProperty("Metalness"                   , m.metalness                   )){}
+    else if(floatProperty("Specular"                    , m.specular                    )){}
+    else if( vec3Property("Emission"                    , m.emission                    )){}
+    else if( vec3Property("Subsurface"                  , m.sss                         )){}
+    else if(floatProperty("SubsurfaceScale"             , m.sssScale                    )){}
+    else if( vec3Property("SubsurfaceRadius"            , m.sssRadius                   )){}
+    else if(floatProperty("Transmission"                , m.transmission                )){}
+    else if(floatProperty("TransmissionRoughness"       , m.transmissionRoughness       )){}
+    else if(floatProperty("Sheen"                       , m.sheen                       )){}
+    else if(floatProperty("SheenTint"                   , m.sheenTint                   )){}
+    else if(floatProperty("ClearCoat"                   , m.clearCoat                   )){}
+    else if(floatProperty("ClearCoatRoughness"          , m.clearCoatRoughness          )){}
+    else if(floatProperty("IOR"                         , m.ior                         )){}
+    else if(floatProperty("albedoBrightness"            , m.albedoBrightness            )){}
+    else if(floatProperty("albedoContrast"              , m.albedoContrast              )){}
+    else if(floatProperty("albedoGamma"                 , m.albedoGamma                 )){}
+    else if(floatProperty("albedoHue"                   , m.albedoHue                   )){}
+    else if(floatProperty("albedoSaturation"            , m.albedoSaturation            )){}
+    else if(floatProperty("albedoValue"                 , m.albedoValue                 )){}
+    else if(floatProperty("albedoFactor"                , m.albedoFactor                )){}
+    else if( boolProperty("rayVisibilitityCamera"       , m.rayVisibilitityCamera       )){}
+    else if( boolProperty("rayVisibilitityDiffuse"      , m.rayVisibilitityDiffuse      )){}
+    else if( boolProperty("rayVisibilitityGlossy"       , m.rayVisibilitityGlossy       )){}
+    else if( boolProperty("rayVisibilitityTransmission" , m.rayVisibilitityTransmission )){}
+    else if( boolProperty("rayVisibilitityScatter"      , m.rayVisibilitityScatter      )){}
+    else if( boolProperty("rayVisibilitityShadow"       , m.rayVisibilitityShadow       )){}
+    else if( boolProperty("rayVisibilitityShadowCatcher", m.rayVisibilitityShadowCatcher)){}
+    else if(  mapProperty("map_ClearCoat"               , m.clearCoatTexture            )){}
+    else if(  mapProperty("map_ClearCoatRoughness"      , m.clearCoatRoughnessTexture   )){}
+    else if(  mapProperty("map_Emission"                , m.emissionTexture             )){}
+    else if(  mapProperty("map_Metalness"               , m.metalnessTexture            )){}
+    else if(  mapProperty("map_Roughness"               , m.roughnessTexture            )){}
+    else if(  mapProperty("map_Sheen"                   , m.sheenTexture                )){}
+    else if(  mapProperty("map_SheenTint"               , m.sheenTintTexture            )){}
+    else if(  mapProperty("map_Specular"                , m.specularTexture             )){}
+    else if(  mapProperty("map_Subsurface"              , m.sssTexture                  )){}
+    else if(  mapProperty("map_SubsurfaceScale"         , m.sssScaleTexture             )){}
+    else if(  mapProperty("map_Transmission"            , m.transmissionTexture         )){}
+    else if(  mapProperty("map_TransmissionRoughness"   , m.transmissionRoughnessTexture)){}
   }
 
   return true;
