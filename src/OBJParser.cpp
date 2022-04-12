@@ -532,6 +532,7 @@ bool parseMTL(const std::string& filePath,
     else if(    floatProperty("SubsurfaceScale"             , m.sssScale                    )){}
     else if(     vec3Property("SubsurfaceRadius"            , m.sssRadius                   )){}
     else if(sssMethodProperty("SubsurfaceMethod"            , m.sssMethod                   )){}
+    else if(    floatProperty("NormalStrength"              , m.normalStrength              )){}
     else if(    floatProperty("Transmission"                , m.transmission                )){}
     else if(    floatProperty("TransmissionRoughness"       , m.transmissionRoughness       )){}
     else if(    floatProperty("Sheen"                       , m.sheen                       )){}
