@@ -143,18 +143,23 @@ void readOBJLoader(const objl::Loader& loader,
 std::string getAssociatedFilePath(const std::string& objFilePath,
                                   const std::string& associatedFileName)
 {
+  std::string cleanedPath = objFilePath;
+
+  tp_utils::replace(cleanedPath, "\\\\", "/");
+  tp_utils::replace(cleanedPath, "\\", "/");
+
   std::vector<std::string> temp;
-  tpSplit(temp, objFilePath, '/', tp_utils::SplitBehavior::SkipEmptyParts);
+  tpSplit(temp, cleanedPath, '/', tp_utils::SplitBehavior::SkipEmptyParts);
 
   if(!temp.empty())
     temp.pop_back();
 
   std::string result;
 
-  if(objFilePath[0] == '/')
+  if(cleanedPath[0] == '/')
     result += '/';
 
-  result.reserve(objFilePath.size() + associatedFileName.size());
+  result.reserve(cleanedPath.size() + associatedFileName.size());
   for(const auto& part : temp)
     result += part + '/';
   result += associatedFileName;
