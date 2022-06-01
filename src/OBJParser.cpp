@@ -528,6 +528,7 @@ bool parseMTL(const std::string& filePath,
     else if(    floatProperty("Metalness"                   , m.metalness                   )){}
     else if(    floatProperty("Specular"                    , m.specular                    )){}
     else if(     vec3Property("Emission"                    , m.emission                    )){}
+    else if(    floatProperty("EmissionStrength"            , m.emissionScale               )){}
     else if(     vec3Property("Subsurface"                  , m.sss                         )){}
     else if(    floatProperty("SubsurfaceScale"             , m.sssScale                    )){}
     else if(     vec3Property("SubsurfaceRadius"            , m.sssRadius                   )){}
