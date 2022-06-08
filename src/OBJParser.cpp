@@ -548,13 +548,13 @@ bool parseMTL(const std::string& filePath,
     else if(    floatProperty("albedoSaturation"            , m.albedoSaturation            )){}
     else if(    floatProperty("albedoValue"                 , m.albedoValue                 )){}
     else if(    floatProperty("albedoFactor"                , m.albedoFactor                )){}
-    else if(     boolProperty("rayVisibilitityCamera"       , m.rayVisibilitityCamera       )){}
-    else if(     boolProperty("rayVisibilitityDiffuse"      , m.rayVisibilitityDiffuse      )){}
-    else if(     boolProperty("rayVisibilitityGlossy"       , m.rayVisibilitityGlossy       )){}
-    else if(     boolProperty("rayVisibilitityTransmission" , m.rayVisibilitityTransmission )){}
-    else if(     boolProperty("rayVisibilitityScatter"      , m.rayVisibilitityScatter      )){}
-    else if(     boolProperty("rayVisibilitityShadow"       , m.rayVisibilitityShadow       )){}
-    else if(     boolProperty("rayVisibilitityShadowCatcher", m.rayVisibilitityShadowCatcher)){}
+    else if(     boolProperty("rayVisibilityCamera"         , m.rayVisibilityCamera         )){}
+    else if(     boolProperty("rayVisibilityDiffuse"        , m.rayVisibilityDiffuse        )){}
+    else if(     boolProperty("rayVisibilityGlossy"         , m.rayVisibilityGlossy         )){}
+    else if(     boolProperty("rayVisibilityTransmission"   , m.rayVisibilityTransmission   )){}
+    else if(     boolProperty("rayVisibilityScatter"        , m.rayVisibilityScatter        )){}
+    else if(     boolProperty("rayVisibilityShadow"         , m.rayVisibilityShadow         )){}
+    else if(     boolProperty("rayVisibilityShadowCatcher"  , m.rayVisibilityShadowCatcher  )){}
     else if(      mapProperty("map_ClearCoat"               , m.clearCoatTexture            )){}
     else if(      mapProperty("map_ClearCoatRoughness"      , m.clearCoatRoughnessTexture   )){}
     else if(      mapProperty("map_Emission"                , m.emissionTexture             )){}
