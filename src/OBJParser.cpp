@@ -1,7 +1,6 @@
 #include "tp_obj/OBJParser.h"
 
 #include "tp_utils/FileUtils.h"
-#include "tp_utils/DebugUtils.h"
 
 namespace tp_obj
 {
@@ -25,7 +24,12 @@ std::string joinName(const std::vector<std::string>& parts)
 //##################################################################################################
 bool readBool(const std::string& s)
 {
-  return tpToLower(s) != "false";
+  auto ss = tpToLower(s);
+
+  if(ss == "0" || ss == "false")
+    return false;
+
+  return true;
 }
 
 //##################################################################################################
