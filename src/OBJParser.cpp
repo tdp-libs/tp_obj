@@ -545,6 +545,8 @@ bool parseMTL(const std::string& filePath,
     else if(    floatProperty("ClearCoat"                   , m.clearCoat                   )){}
     else if(    floatProperty("ClearCoatRoughness"          , m.clearCoatRoughness          )){}
     else if(    floatProperty("IOR"                         , m.ior                         )){}
+    // else if(    vec3Property("initialColor"                 , m.initialColor                )){}
+    // else if(    boolProperty("useAlbedoHue"                 , m.useAlbedoHue                )){}
     else if(    floatProperty("albedoBrightness"            , m.albedoBrightness            )){}
     else if(    floatProperty("albedoContrast"              , m.albedoContrast              )){}
     else if(    floatProperty("albedoGamma"                 , m.albedoGamma                 )){}
