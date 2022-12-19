@@ -95,7 +95,6 @@ void readOBJLoader(const objl::Loader& loader,
       outVert->vert    = {v.Position.X, v.Position.Y, v.Position.Z};
       outVert->normal  = {v.Normal.X, v.Normal.Y, v.Normal.Z};
       outVert->texture = {v.TextureCoordinate.X, reverse?1.0f-v.TextureCoordinate.Y:v.TextureCoordinate.Y};
-      outVert->color   = {1.0f, 1.0f, 1.0f, 1.0f};
       outVert++;
     }
 
