@@ -2,6 +2,7 @@
 #define tp_obj_ReadOBJ_h
 
 #include "tp_obj/Globals.h"
+
 #include "tp_math_utils/Geometry3D.h"
 
 #include <iosfwd>
