@@ -4,9 +4,9 @@
 #include "tp_utils/Globals.h"
 
 #if defined(TP_OBJ_LIBRARY)
-#  define TP_OBJ_SHARED_EXPORT TP_EXPORT
+#  define TP_OBJ_EXPORT TP_EXPORT
 #else
-#  define TP_OBJ_SHARED_EXPORT TP_IMPORT
+#  define TP_OBJ_EXPORT TP_IMPORT
 #endif
 
 //##################################################################################################
