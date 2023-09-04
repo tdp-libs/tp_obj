@@ -398,7 +398,6 @@ bool parseMTL(const std::string& filePath,
   {
     std::string c = parts.front();
 
-    if(c == "#")
     if(c == "newmtl")
     {
       auto& m = outputMaterials.emplace_back();
