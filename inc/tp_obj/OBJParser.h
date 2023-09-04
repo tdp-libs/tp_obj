@@ -9,8 +9,8 @@ namespace tp_obj
 {
 
 //##################################################################################################
-//! Read the file, split lines, remove comments
-std::vector<std::vector<std::string>> parseLines(const std::string& filePath);
+//! Read the file, split lines, read exporter version number, remove comments
+std::vector<std::vector<std::string>> parseLines(const std::string& filePath, std::string* exporterVersion=nullptr);
 
 //##################################################################################################
 bool parseOBJ(const std::string& filePath,
@@ -19,6 +19,7 @@ bool parseOBJ(const std::string& filePath,
               int triangleStrip,
               int triangles,
               bool reverse,
+              std::string& exporterVersion,
               std::vector<tp_math_utils::Geometry3D>& outputGeometry);
 
 //##################################################################################################

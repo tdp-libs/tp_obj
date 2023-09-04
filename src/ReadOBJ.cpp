@@ -17,10 +17,11 @@ void readOBJFile(const std::string & filePath,
                  int triangleStrip,
                  int triangles,
                  bool reverse,
+                 std::string& exporterVersion,
                  std::vector<tp_math_utils::Geometry3D>& outputGeometry)
 {
 #if 1
-  parseOBJ(filePath, error, triangleFan, triangleStrip, triangles, reverse, outputGeometry);
+  parseOBJ(filePath, error, triangleFan, triangleStrip, triangles, reverse, exporterVersion, outputGeometry);
 #else
   objl::Loader loader;
 

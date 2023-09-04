@@ -53,15 +53,25 @@ int readInt(const std::string& s)
 }
 
 //##################################################################################################
-std::vector<std::vector<std::string>> parseLines(const std::string& filePath)
+std::vector<std::vector<std::string>> parseLines(const std::string& filePath, std::string* exporterVersion)
 {
   std::vector<std::vector<std::string>> lines;
 
-  auto splitLine = [](std::string line)
+  auto splitLine = [](std::string line, std::string* exporterVersion)
   {
     std::vector<std::string> parts;
     if(auto i=line.find_first_of('#'); i!=std::string::npos)
+    {
+      if(nullptr != exporterVersion)
+      {
+        const std::string exporterVersionPrefix = "# OMI OBJ exporter v";
+        if(0 == line.rfind(exporterVersionPrefix, 0))
+          *exporterVersion = line.substr(exporterVersionPrefix.size());
+      }
+
       line.erase(i);
+    }
+
     line.erase(0, line.find_first_not_of(" \t\n\r\f\v"));
 
     tpSplit(parts, line, ' ', tp_utils::SplitBehavior::SkipEmptyParts);
@@ -75,7 +85,7 @@ std::vector<std::vector<std::string>> parseLines(const std::string& filePath)
 
   lines.reserve(rawLines.size());
   for(const auto& line : rawLines)
-    if(std::vector<std::string> parts = splitLine(line); !parts.empty())
+    if(std::vector<std::string> parts = splitLine(line, exporterVersion); !parts.empty())
       lines.push_back(parts);
 
   return lines;
@@ -88,6 +98,7 @@ bool parseOBJ(const std::string& filePath,
               int triangleStrip,
               int triangles,
               bool reverse,
+              std::string& exporterVersion,
               std::vector<tp_math_utils::Geometry3D>& outputGeometry)
 {
   auto barf = [&](auto msg)
@@ -97,7 +108,7 @@ bool parseOBJ(const std::string& filePath,
     return false;
   };
 
-  std::vector<std::vector<std::string>> lines = parseLines(filePath);
+  std::vector<std::vector<std::string>> lines = parseLines(filePath, &exporterVersion);
 
   std::vector<glm::vec3> objVV;
   std::vector<glm::vec2> objVT;
@@ -387,6 +398,7 @@ bool parseMTL(const std::string& filePath,
   {
     std::string c = parts.front();
 
+    if(c == "#")
     if(c == "newmtl")
     {
       auto& m = outputMaterials.emplace_back();

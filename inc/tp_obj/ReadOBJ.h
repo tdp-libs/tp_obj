@@ -22,6 +22,7 @@ void readOBJFile(const std::string& filePath,
                  int triangleStrip,
                  int triangles,
                  bool reverse,
+                 std::string& exporterVersion,
                  std::vector<tp_math_utils::Geometry3D>& outputGeometry);
 
 //##################################################################################################
