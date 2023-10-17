@@ -19,8 +19,26 @@ TextureOptions splitTextureOptions(const std::string& in)
     if(tpStartsWith(key, "-"))
     {
       std::string value;
-      if(size_t ii = i+1; ii<parts.size())
-        value = parts.at(ii);
+      if(key == "-o" || key == "-s") // three values provided
+      {
+        for(int ii=1; ii<=3; ++ii)
+          if(i+ii<parts.size())
+          {
+            if(ii > 1)
+              value += " ";
+
+            value += parts.at(i+ii);
+          }
+
+        // extra two values
+        i += 2;
+      }
+      else // one value assumed
+      {
+        if(size_t ii = i+1; ii<parts.size())
+          value = parts.at(ii);
+      }
+
       textureOptions.options.emplace_back(key, value);
       tpWarning() << "Extra options: " << key << " " << value;
     }
