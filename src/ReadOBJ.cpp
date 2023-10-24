@@ -88,6 +88,7 @@ void readOBJLoader(const objl::Loader& loader,
     outMesh.triangleStrip = triangleStrip;
     outMesh.triangles     = triangles;
 
+    outMesh.comments.push_back("MESH_NAME");
     outMesh.comments.push_back(mesh.MeshName);
     outMesh.verts.resize(mesh.Vertices.size());
     auto outVert = outMesh.verts.data();

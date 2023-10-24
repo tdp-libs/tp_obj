@@ -262,10 +262,16 @@ bool parseOBJ(const std::string& filePath,
           o.triangles     = triangles    ;
 
           if(!objectName.empty())
+          {
+            o.comments.push_back("MESH_NAME");
             o.comments.push_back(objectName);
+          }
 
           if(!materialName.empty())
+          {
+            o.comments.push_back("MATERIAL_NAME");
             o.comments.push_back(materialName);
+          }
 
           o.material.name = materialName;
 
