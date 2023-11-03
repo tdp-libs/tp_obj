@@ -150,7 +150,7 @@ std::string getAssociatedFilePath(const std::string& objFilePath,
   tp_utils::replace(cleanedPath, "\\", "/");
 
   std::vector<std::string> temp;
-  tpSplit(temp, cleanedPath, '/', tp_utils::SplitBehavior::SkipEmptyParts);
+  tpSplit(temp, cleanedPath, '/', TPSplitBehavior::SkipEmptyParts);
 
   if(!temp.empty())
     temp.pop_back();

@@ -74,14 +74,14 @@ std::vector<std::vector<std::string>> parseLines(const std::string& filePath, st
 
     line.erase(0, line.find_first_not_of(" \t\n\r\f\v"));
 
-    tpSplit(parts, line, ' ', tp_utils::SplitBehavior::SkipEmptyParts);
+    tpSplit(parts, line, ' ', TPSplitBehavior::SkipEmptyParts);
     return parts;
   };
 
   std::vector<std::string> rawLines;
   std::string text = tp_utils::readTextFile(filePath);
   tpRemoveChar(text, '\r');
-  tpSplit(rawLines, text, '\n', tp_utils::SplitBehavior::SkipEmptyParts);
+  tpSplit(rawLines, text, '\n', TPSplitBehavior::SkipEmptyParts);
 
   lines.reserve(rawLines.size());
   for(const auto& line : rawLines)
@@ -305,7 +305,7 @@ bool parseOBJ(const std::string& filePath,
           try
           {
             std::vector<std::string> indexes;
-            tpSplit(indexes, part, '/', tp_utils::SplitBehavior::KeepEmptyParts);
+            tpSplit(indexes, part, '/', TPSplitBehavior::KeepEmptyParts);
 
             if(indexes.size()>=1)
               vvi = size_t(std::stoull(indexes.at(0)))-1;

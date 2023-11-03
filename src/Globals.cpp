@@ -11,7 +11,7 @@ TextureOptions splitTextureOptions(const std::string& in)
   TextureOptions textureOptions;
 
   std::vector<std::string> parts;
-  tpSplit(parts, in, ' ', tp_utils::SplitBehavior::KeepEmptyParts);
+  tpSplit(parts, in, ' ', TPSplitBehavior::KeepEmptyParts);
 
   for(size_t i=0; i<parts.size(); i+=2)
   {
