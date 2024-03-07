@@ -2,6 +2,7 @@
 #include "tp_obj/OBJParser.h"
 
 #include "tp_math_utils/Geometry3D.h"
+#include "tp_math_utils/materials/OpenGLMaterial.h"
 
 #include "tp_utils/DebugUtils.h"
 
@@ -111,18 +112,22 @@ void readOBJLoader(const objl::Loader& loader,
     }
 
     outMesh.material.name = mesh.MeshMaterial.name;
-    outMesh.material.albedo    = {mesh.MeshMaterial.Kd.X, mesh.MeshMaterial.Kd.Y, mesh.MeshMaterial.Kd.Z};
-    outMesh.material.alpha     = mesh.MeshMaterial.d;
 
-    outMesh.material.roughness = std::sqrt(2.0f/(2.0f+float(mesh.MeshMaterial.Ns)));
+    auto openGLMaterial = outMesh.material.findOrAddOpenGL();
+
+
+    openGLMaterial->albedo    = {mesh.MeshMaterial.Kd.X, mesh.MeshMaterial.Kd.Y, mesh.MeshMaterial.Kd.Z};
+    openGLMaterial->alpha     = mesh.MeshMaterial.d;
+
+    openGLMaterial->roughness = std::sqrt(2.0f/(2.0f+float(mesh.MeshMaterial.Ns)));
 
     if(!mesh.MeshMaterial.map_Kd.empty())
-      outMesh.material.albedoTexture = mesh.MeshMaterial.map_Kd;
+      openGLMaterial->albedoTexture = mesh.MeshMaterial.map_Kd;
     else
-      outMesh.material.albedoTexture = mesh.MeshMaterial.map_Ka;
+      openGLMaterial->albedoTexture = mesh.MeshMaterial.map_Ka;
 
-    outMesh.material.alphaTexture    = splitTextureOptions(mesh.MeshMaterial.map_d   ).file;
-    outMesh.material.normalsTexture  = splitTextureOptions(mesh.MeshMaterial.map_bump).file;
+    openGLMaterial->alphaTexture    = splitTextureOptions(mesh.MeshMaterial.map_d   ).file;
+    openGLMaterial->normalsTexture  = splitTextureOptions(mesh.MeshMaterial.map_bump).file;
 
     tpWarning() << "Material: " << mesh.MeshMaterial.name << " Mesh name: " << mesh.MeshName;
     tpWarning() << "Ambient Color: " << mesh.MeshMaterial.Ka.X << ", " << mesh.MeshMaterial.Ka.Y << ", " << mesh.MeshMaterial.Ka.Z;

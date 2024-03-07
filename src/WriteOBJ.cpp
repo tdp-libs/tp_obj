@@ -1,5 +1,7 @@
 #include "tp_obj/WriteOBJ.h"
 
+#include "tp_math_utils/materials/OpenGLMaterial.h"
+
 #include "tp_utils/FileUtils.h"
 
 namespace tp_obj
@@ -24,8 +26,11 @@ std::string serializeMTL(const std::vector<tp_math_utils::Geometry3D>& geometry)
       result << name << " " << c << "\n";
     };
 
-    addVec3("Kd", mesh.material.albedo);
-    addFloat("d", mesh.material.alpha);
+    tp_math_utils::OpenGLMaterial::view(mesh.material, [&](const tp_math_utils::OpenGLMaterial& material)
+    {
+      addVec3("Kd", material.albedo);
+      addFloat("d", material.alpha);
+    });
   }
 
   return result.str();

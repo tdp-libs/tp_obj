@@ -1,5 +1,8 @@
 #include "tp_obj/OBJParser.h"
 
+#include "tp_math_utils/materials/OpenGLMaterial.h"
+#include "tp_math_utils/materials/LegacyMaterial.h"
+
 #include "tp_utils/FileUtils.h"
 
 namespace tp_obj
@@ -420,6 +423,9 @@ bool parseMTL(const std::string& filePath,
 
     auto& m = outputMaterials.back();
 
+    auto openGLMaterial = m.findOrAddOpenGL();
+    auto legacyMaterial = m.findOrAddLegacy();
+
     auto boolProperty = [&](auto key, bool& value)
     {
       if(c != key)
@@ -503,26 +509,26 @@ bool parseMTL(const std::string& filePath,
       return (c == key);
     };
 
-    if     ( ignoreVec3Property("Ka"                        )){} // Ambient Color
-    else if(       vec3Property("Kd"      , m.albedo        )){} // Diffuse Color
-    else if( ignoreVec3Property("Ks"                        )){} // Specular Color
-    else if(ignoreFloatProperty("Ni"                        )){} // Optical Density
-    else if(      floatProperty("d"       , m.alpha         )){} // Dissolve
-    else if(        mapProperty("map_Kd"  , m.albedoTexture )){} // Diffuse Texture Map
-    else if(  ignoreMapProperty("map_Ks"                    )){} // Specular Texture Map
-    else if(  ignoreMapProperty("map_Ns"                    )){} // Specular Hightlight Map
-    else if(        mapProperty("map_d"   , m.alphaTexture  )){} // Alpha Texture Map
-    else if(        mapProperty("map_Bump", m.normalsTexture)){} // Bump Map
-    else if(        mapProperty("map_bump", m.normalsTexture)){} // Bump Map
-    else if(        mapProperty("bump"    , m.normalsTexture)){} // Bump Map
-    else if(        mapProperty("norm"    , m.normalsTexture)){} // Bump Map
-    else if(  ignoreMapProperty("map_ao"                    )){} // Alpha Texture Map
+    if     ( ignoreVec3Property("Ka"                                      )){} // Ambient Color
+    else if(       vec3Property("Kd"      , openGLMaterial->albedo        )){} // Diffuse Color
+    else if( ignoreVec3Property("Ks"                                      )){} // Specular Color
+    else if(ignoreFloatProperty("Ni"                                      )){} // Optical Density
+    else if(      floatProperty("d"       , openGLMaterial->alpha         )){} // Dissolve
+    else if(        mapProperty("map_Kd"  , openGLMaterial->albedoTexture )){} // Diffuse Texture Map
+    else if(  ignoreMapProperty("map_Ks"                                  )){} // Specular Texture Map
+    else if(  ignoreMapProperty("map_Ns"                                  )){} // Specular Hightlight Map
+    else if(        mapProperty("map_d"   , openGLMaterial->alphaTexture  )){} // Alpha Texture Map
+    else if(        mapProperty("map_Bump", openGLMaterial->normalsTexture)){} // Bump Map
+    else if(        mapProperty("map_bump", openGLMaterial->normalsTexture)){} // Bump Map
+    else if(        mapProperty("bump"    , openGLMaterial->normalsTexture)){} // Bump Map
+    else if(        mapProperty("norm"    , openGLMaterial->normalsTexture)){} // Bump Map
+    else if(  ignoreMapProperty("map_ao"                                  )){} // Alpha Texture Map
 
     // Ambient Texture Map
     else if(c == "map_Ka")
     {
-      if(!m.albedoTexture.isValid())
-        m.albedoTexture = joinName(parts);
+      if(!openGLMaterial->albedoTexture.isValid())
+        openGLMaterial->albedoTexture = joinName(parts);
     }
 
     // Specular Exponent
@@ -545,51 +551,49 @@ bool parseMTL(const std::string& filePath,
     }
 
     //-- Extended material properties --------------------------------------------------------------
-    else if(    floatProperty("Roughness"                   , m.roughness                   )){}
-    else if(    floatProperty("Metalness"                   , m.metalness                   )){}
-    else if(    floatProperty("Specular"                    , m.specular                    )){}
-    else if(     vec3Property("Emission"                    , m.emission                    )){}
-    else if(    floatProperty("EmissionStrength"            , m.emissionScale               )){}
-    else if(     vec3Property("Subsurface"                  , m.sss                         )){}
-    else if(    floatProperty("SubsurfaceScale"             , m.sssScale                    )){}
-    else if(     vec3Property("SubsurfaceRadius"            , m.sssRadius                   )){}
-    else if(sssMethodProperty("SubsurfaceMethod"            , m.sssMethod                   )){}
-    else if(    floatProperty("NormalStrength"              , m.normalStrength              )){}
-    else if(    floatProperty("Transmission"                , m.transmission                )){}
-    else if(    floatProperty("TransmissionRoughness"       , m.transmissionRoughness       )){}
-    else if(    floatProperty("Sheen"                       , m.sheen                       )){}
-    else if(    floatProperty("SheenTint"                   , m.sheenTint                   )){}
-    else if(    floatProperty("ClearCoat"                   , m.clearCoat                   )){}
-    else if(    floatProperty("ClearCoatRoughness"          , m.clearCoatRoughness          )){}
-    else if(    floatProperty("IOR"                         , m.ior                         )){}
-    // else if(    vec3Property("initialColor"                 , m.initialColor                )){}
-    // else if(    boolProperty("useAlbedoHue"                 , m.useAlbedoHue                )){}
-    else if(    floatProperty("albedoBrightness"            , m.albedoBrightness            )){}
-    else if(    floatProperty("albedoContrast"              , m.albedoContrast              )){}
-    else if(    floatProperty("albedoGamma"                 , m.albedoGamma                 )){}
-    else if(    floatProperty("albedoHue"                   , m.albedoHue                   )){}
-    else if(    floatProperty("albedoSaturation"            , m.albedoSaturation            )){}
-    else if(    floatProperty("albedoValue"                 , m.albedoValue                 )){}
-    else if(    floatProperty("albedoFactor"                , m.albedoFactor                )){}
-    else if(     boolProperty("rayVisibilityCamera"         , m.rayVisibilityCamera         )){}
-    else if(     boolProperty("rayVisibilityDiffuse"        , m.rayVisibilityDiffuse        )){}
-    else if(     boolProperty("rayVisibilityGlossy"         , m.rayVisibilityGlossy         )){}
-    else if(     boolProperty("rayVisibilityTransmission"   , m.rayVisibilityTransmission   )){}
-    else if(     boolProperty("rayVisibilityScatter"        , m.rayVisibilityScatter        )){}
-    else if(     boolProperty("rayVisibilityShadow"         , m.rayVisibilityShadow         )){}
-    else if(     boolProperty("rayVisibilityShadowCatcher"  , m.rayVisibilityShadowCatcher  )){}
-    else if(      mapProperty("map_ClearCoat"               , m.clearCoatTexture            )){}
-    else if(      mapProperty("map_ClearCoatRoughness"      , m.clearCoatRoughnessTexture   )){}
-    else if(      mapProperty("map_Emission"                , m.emissionTexture             )){}
-    else if(      mapProperty("map_Metalness"               , m.metalnessTexture            )){}
-    else if(      mapProperty("map_Roughness"               , m.roughnessTexture            )){}
-    else if(      mapProperty("map_Sheen"                   , m.sheenTexture                )){}
-    else if(      mapProperty("map_SheenTint"               , m.sheenTintTexture            )){}
-    else if(      mapProperty("map_Specular"                , m.specularTexture             )){}
-    else if(      mapProperty("map_Subsurface"              , m.sssTexture                  )){}
-    else if(      mapProperty("map_SubsurfaceScale"         , m.sssScaleTexture             )){}
-    else if(      mapProperty("map_Transmission"            , m.transmissionTexture         )){}
-    else if(      mapProperty("map_TransmissionRoughness"   , m.transmissionRoughnessTexture)){}
+    else if(    floatProperty("Roughness"                   , openGLMaterial->roughness                   )){}
+    else if(    floatProperty("Metalness"                   , openGLMaterial->metalness                   )){}
+    else if(    floatProperty("Specular"                    , legacyMaterial->specular                    )){}
+    else if(     vec3Property("Emission"                    , legacyMaterial->emission                    )){}
+    else if(    floatProperty("EmissionStrength"            , legacyMaterial->emissionScale               )){}
+    else if(     vec3Property("Subsurface"                  , legacyMaterial->sss                         )){}
+    else if(    floatProperty("SubsurfaceScale"             , legacyMaterial->sssScale                    )){}
+    else if(     vec3Property("SubsurfaceRadius"            , legacyMaterial->sssRadius                   )){}
+    else if(sssMethodProperty("SubsurfaceMethod"            , legacyMaterial->sssMethod                   )){}
+    else if(    floatProperty("NormalStrength"              , legacyMaterial->normalStrength              )){}
+    else if(    floatProperty("Transmission"                , openGLMaterial->transmission                )){}
+    else if(    floatProperty("TransmissionRoughness"       , openGLMaterial->transmissionRoughness       )){}
+    else if(    floatProperty("Sheen"                       , legacyMaterial->sheen                       )){}
+    else if(    floatProperty("SheenTint"                   , legacyMaterial->sheenTint                   )){}
+    else if(    floatProperty("ClearCoat"                   , legacyMaterial->clearCoat                   )){}
+    else if(    floatProperty("ClearCoatRoughness"          , legacyMaterial->clearCoatRoughness          )){}
+    else if(    floatProperty("IOR"                         , legacyMaterial->ior                         )){}
+    else if(    floatProperty("albedoBrightness"            , openGLMaterial->albedoBrightness            )){}
+    else if(    floatProperty("albedoContrast"              , openGLMaterial->albedoContrast              )){}
+    else if(    floatProperty("albedoGamma"                 , openGLMaterial->albedoGamma                 )){}
+    else if(    floatProperty("albedoHue"                   , openGLMaterial->albedoHue                   )){}
+    else if(    floatProperty("albedoSaturation"            , openGLMaterial->albedoSaturation            )){}
+    else if(    floatProperty("albedoValue"                 , openGLMaterial->albedoValue                 )){}
+    else if(    floatProperty("albedoFactor"                , openGLMaterial->albedoFactor                )){}
+    else if(     boolProperty("rayVisibilityCamera"         , legacyMaterial->rayVisibilityCamera         )){}
+    else if(     boolProperty("rayVisibilityDiffuse"        , legacyMaterial->rayVisibilityDiffuse        )){}
+    else if(     boolProperty("rayVisibilityGlossy"         , legacyMaterial->rayVisibilityGlossy         )){}
+    else if(     boolProperty("rayVisibilityTransmission"   , legacyMaterial->rayVisibilityTransmission   )){}
+    else if(     boolProperty("rayVisibilityScatter"        , legacyMaterial->rayVisibilityScatter        )){}
+    else if(     boolProperty("rayVisibilityShadow"         , legacyMaterial->rayVisibilityShadow         )){}
+    else if(     boolProperty("rayVisibilityShadowCatcher"  , openGLMaterial->rayVisibilityShadowCatcher  )){}
+    else if(      mapProperty("map_ClearCoat"               , legacyMaterial->clearCoatTexture            )){}
+    else if(      mapProperty("map_ClearCoatRoughness"      , legacyMaterial->clearCoatRoughnessTexture   )){}
+    else if(      mapProperty("map_Emission"                , legacyMaterial->emissionTexture             )){}
+    else if(      mapProperty("map_Metalness"               , openGLMaterial->metalnessTexture            )){}
+    else if(      mapProperty("map_Roughness"               , openGLMaterial->roughnessTexture            )){}
+    else if(      mapProperty("map_Sheen"                   , legacyMaterial->sheenTexture                )){}
+    else if(      mapProperty("map_SheenTint"               , legacyMaterial->sheenTintTexture            )){}
+    else if(      mapProperty("map_Specular"                , legacyMaterial->specularTexture             )){}
+    else if(      mapProperty("map_Subsurface"              , legacyMaterial->sssTexture                  )){}
+    else if(      mapProperty("map_SubsurfaceScale"         , legacyMaterial->sssScaleTexture             )){}
+    else if(      mapProperty("map_Transmission"            , openGLMaterial->transmissionTexture         )){}
+    else if(      mapProperty("map_TransmissionRoughness"   , openGLMaterial->transmissionRoughnessTexture)){}
   }
 
   return true;
