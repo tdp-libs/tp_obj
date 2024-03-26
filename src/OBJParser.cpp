@@ -2,9 +2,10 @@
 
 #include "tp_math_utils/materials/OpenGLMaterial.h"
 #include "tp_math_utils/materials/LegacyMaterial.h"
+#include "tp_math_utils/materials/ExternalMaterial.h"
 
 #include "tp_utils/FileUtils.h"
-
+#include "tp_utils/DebugUtils.h"
 namespace tp_obj
 {
 
@@ -420,6 +421,15 @@ bool parseMTL(const std::string& filePath,
 
     if(outputMaterials.empty())
       continue;
+
+    if(c == "bml")
+    {
+      auto& m = outputMaterials.back();
+      auto path = tp_utils::pathAppend(tp_utils::directoryName(filePath), joinName(parts));
+      auto externalMaterial = m.findOrAddExternal("blend");
+      externalMaterial->subPath = path;
+      continue;
+    }
 
     auto& m = outputMaterials.back();
 
