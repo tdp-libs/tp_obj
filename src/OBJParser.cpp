@@ -112,6 +112,9 @@ bool parseOBJ(const std::string& filePath,
     return false;
   };
 
+  if(!tp_utils::exists(filePath))
+    return barf("file doesn't exist: " + filePath);
+
   std::vector<std::vector<std::string>> lines = parseLines(filePath, &exporterVersion);
 
   std::vector<glm::vec3> objVV;
