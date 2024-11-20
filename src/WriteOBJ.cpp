@@ -4,6 +4,8 @@
 
 #include "tp_utils/FileUtils.h"
 
+#include <sstream>
+
 namespace tp_obj
 {
 
