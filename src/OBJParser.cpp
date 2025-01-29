@@ -425,19 +425,18 @@ bool parseMTL(const std::string& filePath,
     if(outputMaterials.empty())
       continue;
 
+    auto& m = outputMaterials.back();
+
+    auto openGLMaterial = m.findOrAddOpenGL();
+    auto legacyMaterial = m.findOrAddLegacy();
+
     if(c == "bml")
     {
-      auto& m = outputMaterials.back();
       auto path = tp_utils::pathAppend(tp_utils::directoryName(filePath), joinName(parts));
       auto externalMaterial = m.findOrAddExternal("blend");
       externalMaterial->subPath = path;
       continue;
     }
-
-    auto& m = outputMaterials.back();
-
-    auto openGLMaterial = m.findOrAddOpenGL();
-    auto legacyMaterial = m.findOrAddLegacy();
 
     auto boolProperty = [&](auto key, bool& value)
     {

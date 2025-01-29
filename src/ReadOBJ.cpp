@@ -21,6 +21,9 @@ void readOBJFile(const std::string & filePath,
                  std::string& exporterVersion,
                  std::vector<tp_math_utils::Geometry3D>& outputGeometry)
 {
+#ifdef TP_LINUX
+#warning remove objl
+#endif
 #if 1
   parseOBJ(filePath, error, triangleFan, triangleStrip, triangles, reverse, exporterVersion, outputGeometry);
 #else
