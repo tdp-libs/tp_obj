@@ -26,25 +26,6 @@ void readOBJFile(const std::string& filePath,
                  std::vector<tp_math_utils::Geometry3D>& outputGeometry);
 
 //##################################################################################################
-void readOBJStream(std::istream& inputStream,
-                   const std::function<void(const std::string&, const std::function<void(std::istream&)>&)>& loadMTL,
-                   std::string& error,
-                   int triangleFan,
-                   int triangleStrip,
-                   int triangles,
-                   bool reverse,
-                   std::vector<tp_math_utils::Geometry3D>& outputGeometry);
-
-//##################################################################################################
-void readOBJLoader(const objl::Loader& loader,
-                   std::string& error,
-                   int triangleFan,
-                   int triangleStrip,
-                   int triangles,
-                   bool reverse,
-                   std::vector<tp_math_utils::Geometry3D>& outputGeometry);
-
-//##################################################################################################
 std::string getAssociatedFilePath(const std::string& objFilePath,
                                   const std::string& associatedFileName);
 
