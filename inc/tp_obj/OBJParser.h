@@ -1,33 +1,36 @@
-#ifndef tp_obj_ParseOBJ_h
-#define tp_obj_ParseOBJ_h
+#pragma once
 
 #include "tp_obj/Globals.h"
 
 #include "tp_math_utils/Geometry3D.h"
+
+namespace tp_utils
+{
+class Progress;
+}
 
 namespace tp_obj
 {
 
 //##################################################################################################
 //! Read the file, split lines, read exporter version number, remove comments
-std::vector<std::vector<std::string>> parseLines(const std::string& filePath, std::string* exporterVersion=nullptr);
+std::vector<std::vector<std::string>> parseLines(const std::string& filePath,
+                                                 std::string* exporterVersion=nullptr);
 
 //##################################################################################################
-bool parseOBJ(const std::string& filePath,
-              std::string& error,
-              int triangleFan,
-              int triangleStrip,
-              int triangles,
-              bool reverse,
-              std::string& exporterVersion,
-              std::vector<tp_math_utils::Geometry3D>& outputGeometry);
+bool TP_OBJ_EXPORT parseOBJ(const std::string& filePath,
+                            int triangleFan,
+                            int triangleStrip,
+                            int triangles,
+                            bool reverse,
+                            std::string& exporterVersion,
+                            std::vector<tp_math_utils::Geometry3D>& outputGeometry,
+                            tp_utils::Progress* progress);
 
 //##################################################################################################
-bool parseMTL(const std::string& filePath,
-              std::string& error,
-              std::vector<tp_math_utils::Material>& outputMaterials);
+bool TP_OBJ_EXPORT parseMTL(const std::string& filePath,
+                            std::vector<tp_math_utils::Material>& outputMaterials,
+                            tp_utils::Progress* progress);
 
 
 }
-
-#endif

@@ -7,16 +7,23 @@ namespace tp_obj
 {
 
 //##################################################################################################
-void readOBJFile(const std::string & filePath,
-                 std::string& error,
+bool readOBJFile(const std::string & filePath,
                  int triangleFan,
                  int triangleStrip,
                  int triangles,
                  bool reverse,
                  std::string& exporterVersion,
-                 std::vector<tp_math_utils::Geometry3D>& outputGeometry)
+                 std::vector<tp_math_utils::Geometry3D>& outputGeometry,
+                 tp_utils::Progress* progress)
 {
-  parseOBJ(filePath, error, triangleFan, triangleStrip, triangles, reverse, exporterVersion, outputGeometry);
+  return parseOBJ(filePath,
+                  triangleFan,
+                  triangleStrip,
+                  triangles,
+                  reverse,
+                  exporterVersion,
+                  outputGeometry,
+                  progress);
 }
 
 //##################################################################################################

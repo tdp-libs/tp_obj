@@ -5,7 +5,8 @@
 #include "tp_math_utils/materials/ExternalMaterial.h"
 
 #include "tp_utils/FileUtils.h"
-#include "tp_utils/DebugUtils.h"
+#include "tp_utils/Progress.h"
+
 namespace tp_obj
 {
 
@@ -97,18 +98,18 @@ std::vector<std::vector<std::string>> parseLines(const std::string& filePath, st
 
 //##################################################################################################
 bool parseOBJ(const std::string& filePath,
-              std::string& error,
               int triangleFan,
               int triangleStrip,
               int triangles,
               bool reverse,
               std::string& exporterVersion,
-              std::vector<tp_math_utils::Geometry3D>& outputGeometry)
+              std::vector<tp_math_utils::Geometry3D>& outputGeometry,
+              tp_utils::Progress* progress)
 {
   auto barf = [&](auto msg)
   {
-    error += "Parse OBJ error: ";
-    error += msg;
+    progress->addError("Parse OBJ error: ");
+    progress->addError(msg);
     return false;
   };
 
@@ -204,7 +205,7 @@ bool parseOBJ(const std::string& filePath,
 
       else if(c == "mtllib")
       {
-        parseMTL(tp_utils::pathAppend(tp_utils::directoryName(filePath), joinName(parts)), error, objMaterials);
+        parseMTL(tp_utils::pathAppend(tp_utils::directoryName(filePath), joinName(parts)), objMaterials, progress);
       }
     }
   }
@@ -401,10 +402,10 @@ bool parseOBJ(const std::string& filePath,
 
 //##################################################################################################
 bool parseMTL(const std::string& filePath,
-              std::string& error,
-              std::vector<tp_math_utils::Material>& outputMaterials)
+              std::vector<tp_math_utils::Material>& outputMaterials,
+              tp_utils::Progress* progress)
 {
-  TP_UNUSED(error);
+  TP_UNUSED(progress);
 
   std::vector<std::vector<std::string>> lines = parseLines(filePath);
   for(const auto& parts : lines)
@@ -459,17 +460,6 @@ bool parseMTL(const std::string& filePath,
 
       return true;
     };
-
-//    auto intProperty = [&](auto key, int& value)
-//    {
-//      if(c != key)
-//        return false;
-
-//      if(parts.size() == 2)
-//        value = readInt(parts[1]);
-
-//      return true;
-//    };
 
     auto sssMethodProperty = [&](auto key, tp_math_utils::SSSMethod& value)
     {

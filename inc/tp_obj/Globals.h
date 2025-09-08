@@ -1,5 +1,4 @@
-#ifndef tp_obj_Globals_h
-#define tp_obj_Globals_h
+#pragma once
 
 #include "tp_utils/Globals.h"
 
@@ -25,5 +24,3 @@ struct TextureOptions
 TextureOptions splitTextureOptions(const std::string& in);
 
 }
-
-#endif
